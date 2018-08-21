@@ -42,5 +42,24 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+
+	int posX = 400;
+	int posY = 300;
+
+	int velX = 0;
+	int velY = 0;
+	int velInc = 1;
+
+	bool inhibitUp = false;
+	bool inhibitDown = false;
+	bool inhibitLeft = false;
+	bool inhibitRight = false;
+
+	int red = 255;
+	int green = 255;
+	int blue = 255;
+
+	bool changeShape = false;
+
 	/********************************/
 };
