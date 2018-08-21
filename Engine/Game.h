@@ -36,6 +36,11 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+
+	void DrawBox(int x, int y, int r, int g, int b);
+	void KeepInsideScreen(int &posX, int &posY, int &velX, int &velY, int sizeX, int sizeY);
+	bool IsShapeColliding();
+
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -43,11 +48,11 @@ private:
 	/********************************/
 	/*  User Variables              */
 
-	int posX = 400;
-	int posY = 300;
+	int pos1X = 400;
+	int pos1Y = 300;
 
-	int shape2X = 200;
-	int shape2Y = 200;
+	int pos2X = 200;
+	int pos2Y = 200;
 
 	int velX = 0;
 	int velY = 0;

@@ -28,6 +28,66 @@ Game::Game( MainWindow& wnd )
 {
 }
 
+void Game::DrawBox(int x, int y, int r, int g, int b)
+{
+	gfx.PutPixel(x + 5, y, r, g, b);
+	gfx.PutPixel(x + 6, y, r, g, b);
+	gfx.PutPixel(x + 7, y, r, g, b);
+	gfx.PutPixel(x + 8, y, r, g, b);
+	gfx.PutPixel(x + 9, y, r, g, b);
+	gfx.PutPixel(x + 10, y, r, g, b);
+	gfx.PutPixel(x - 10, y, r, g, b);
+	gfx.PutPixel(x - 9, y, r, g, b);
+	gfx.PutPixel(x - 8, y, r, g, b);
+	gfx.PutPixel(x - 7, y, r, g, b);
+	gfx.PutPixel(x - 6, y, r, g, b);
+	gfx.PutPixel(x - 5, y, r, g, b);
+	gfx.PutPixel(x, y + 5, r, g, b);
+	gfx.PutPixel(x, y + 6, r, g, b);
+	gfx.PutPixel(x, y + 7, r, g, b);
+	gfx.PutPixel(x, y + 8, r, g, b);
+	gfx.PutPixel(x, y + 9, r, g, b);
+	gfx.PutPixel(x, y + 10, r, g, b);
+	gfx.PutPixel(x, y - 10, r, g, b);
+	gfx.PutPixel(x, y - 9, r, g, b);
+	gfx.PutPixel(x, y - 8, r, g, b);
+	gfx.PutPixel(x, y - 7, r, g, b);
+	gfx.PutPixel(x, y - 6, r, g, b);
+	gfx.PutPixel(x, y - 5, r, g, b);
+}
+
+void Game::KeepInsideScreen(int &posX, int &posY, int &velX, int &velY, int sizeX, int sizeY)
+{
+	if ((posX + sizeX) >= gfx.ScreenWidth)
+	{
+		posX = gfx.ScreenWidth - sizeX - 1;
+		velX = 0;
+	}
+
+	if ((posX - sizeX) <= 0)
+	{
+		posX = sizeX + 1;
+		velX = 0;
+	}
+
+	if ((posY + sizeY) >= gfx.ScreenHeight)
+	{
+		posY = gfx.ScreenHeight - sizeY - 1;
+		velY = 0;
+	}
+
+	if ((posY - sizeY) <= 0)
+	{
+		posY = sizeY + 1;
+		velY = 0;
+	}
+}
+
+bool Game::IsShapeColliding()
+{
+	return false;
+}
+
 void Game::Go()
 {
 	gfx.BeginFrame();	
@@ -105,107 +165,25 @@ void Game::UpdateModel()
 		velY = 0;
 	}
 
-	changeShape = wnd.kbd.KeyIsPressed(VK_SHIFT);
+	pos1X += velX;
+	pos1Y += velY;
 
-	// Keep inside the window box
-	if (posX + 10 >= gfx.ScreenWidth)
-	{
-		posX = gfx.ScreenWidth - 11;
-		velX = 0;
-	}
-
-	if (posX - 10 <= 0)
-	{
-		posX = 11;
-		velX = 0;
-	}
-
-	if (posY + 10 >= gfx.ScreenHeight)
-	{
-		posY = gfx.ScreenHeight - 11;
-		velY = 0;
-	}
-
-	if (posY - 10 <= 0)
-	{
-		posY = 11;
-		velY = 0;
-	}
+	KeepInsideScreen(pos1X, pos1Y, velX, velY, 10, 10);
 
 	// Check Collision
-	if ((posX - 10 < (shape2X + 10) && posX + 10 >(shape2X - 10)) && (posY - 10 < (shape2Y + 10) && posY + 10 > (shape2Y - 10)))
+	if ((pos1X - 10 <= (pos2X + 10) && pos1X + 10 >= (pos2X - 10)) && (pos1Y - 10 <= (pos2Y + 10) && pos1Y + 10 >= (pos2Y - 10)))
 	{
 		green = 0;
 	}
-
-	posX += velX;
-	posY += velY;	
 }
 
 void Game::ComposeFrame()
 {
 	// Movable Shape
-	if (changeShape)
-	{
-		gfx.PutPixel(posX + 5, posY, red, green, blue);
-		gfx.PutPixel(posX + 4, posY, red, green, blue);
-		gfx.PutPixel(posX + 3, posY, red, green, blue);
-		gfx.PutPixel(posX + 2, posY, red, green, blue);
-		gfx.PutPixel(posX + 1, posY, red, green, blue);
-		gfx.PutPixel(posX, posY, red, green, blue);
-	}
-	else
-	{
-		gfx.PutPixel(posX + 5, posY, red, green, blue);
-		gfx.PutPixel(posX + 6, posY, red, green, blue);
-		gfx.PutPixel(posX + 7, posY, red, green, blue);
-		gfx.PutPixel(posX + 8, posY, red, green, blue);
-		gfx.PutPixel(posX + 9, posY, red, green, blue);
-		gfx.PutPixel(posX + 10, posY, red, green, blue);
-		gfx.PutPixel(posX - 10, posY, red, green, blue);
-		gfx.PutPixel(posX - 9, posY, red, green, blue);
-		gfx.PutPixel(posX - 8, posY, red, green, blue);
-		gfx.PutPixel(posX - 7, posY, red, green, blue);
-		gfx.PutPixel(posX - 6, posY, red, green, blue);
-		gfx.PutPixel(posX - 5, posY, red, green, blue);
-		gfx.PutPixel(posX, posY + 5, red, green, blue);
-		gfx.PutPixel(posX, posY + 6, red, green, blue);
-		gfx.PutPixel(posX, posY + 7, red, green, blue);
-		gfx.PutPixel(posX, posY + 8, red, green, blue);
-		gfx.PutPixel(posX, posY + 9, red, green, blue);
-		gfx.PutPixel(posX, posY + 10, red, green, blue);
-		gfx.PutPixel(posX, posY - 10, red, green, blue);
-		gfx.PutPixel(posX, posY - 9, red, green, blue);
-		gfx.PutPixel(posX, posY - 8, red, green, blue);
-		gfx.PutPixel(posX, posY - 7, red, green, blue);
-		gfx.PutPixel(posX, posY - 6, red, green, blue);
-		gfx.PutPixel(posX, posY - 5, red, green, blue);
-	}
+	DrawBox(pos1X, pos1Y, red, green, blue);
 
 	//Fixed Shape
-	gfx.PutPixel(shape2X + 5, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X + 6, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X + 7, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X + 8, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X + 9, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X + 10, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 10, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 9, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 8, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 7, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 6, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X - 5, shape2Y, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 5, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 6, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 7, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 8, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 9, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y + 10, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 10, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 9, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 8, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 7, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 6, red, green, 0);
-	gfx.PutPixel(shape2X, shape2Y - 5, red, green, 0);
-
+	DrawBox(pos2X, pos2Y, red, green, 0);
 }
+
+
