@@ -46,6 +46,9 @@ private:
 	int posX = 400;
 	int posY = 300;
 
+	int shape2X = 200;
+	int shape2Y = 200;
+
 	int velX = 0;
 	int velY = 0;
 	int velInc = 1;

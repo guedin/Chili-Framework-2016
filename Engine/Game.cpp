@@ -99,14 +99,52 @@ void Game::UpdateModel()
 		green = 255;
 	}
 
-	posX += velX;
-	posY += velY;
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		velX = 0;
+		velY = 0;
+	}
 
 	changeShape = wnd.kbd.KeyIsPressed(VK_SHIFT);
+
+	// Keep inside the window box
+	if (posX + 10 >= gfx.ScreenWidth)
+	{
+		posX = gfx.ScreenWidth - 11;
+		velX = 0;
+	}
+
+	if (posX - 10 <= 0)
+	{
+		posX = 11;
+		velX = 0;
+	}
+
+	if (posY + 10 >= gfx.ScreenHeight)
+	{
+		posY = gfx.ScreenHeight - 11;
+		velY = 0;
+	}
+
+	if (posY - 10 <= 0)
+	{
+		posY = 11;
+		velY = 0;
+	}
+
+	// Check Collision
+	if ((posX - 10 < (shape2X + 10) && posX + 10 >(shape2X - 10)) && (posY - 10 < (shape2Y + 10) && posY + 10 > (shape2Y - 10)))
+	{
+		green = 0;
+	}
+
+	posX += velX;
+	posY += velY;	
 }
 
 void Game::ComposeFrame()
 {
+	// Movable Shape
 	if (changeShape)
 	{
 		gfx.PutPixel(posX + 5, posY, red, green, blue);
@@ -143,4 +181,31 @@ void Game::ComposeFrame()
 		gfx.PutPixel(posX, posY - 6, red, green, blue);
 		gfx.PutPixel(posX, posY - 5, red, green, blue);
 	}
+
+	//Fixed Shape
+	gfx.PutPixel(shape2X + 5, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X + 6, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X + 7, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X + 8, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X + 9, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X + 10, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 10, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 9, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 8, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 7, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 6, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X - 5, shape2Y, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 5, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 6, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 7, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 8, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 9, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y + 10, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 10, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 9, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 8, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 7, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 6, red, green, 0);
+	gfx.PutPixel(shape2X, shape2Y - 5, red, green, 0);
+
 }
